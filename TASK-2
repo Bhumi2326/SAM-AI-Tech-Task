@@ -1,0 +1,106 @@
+# ============================================
+# Task 2: Cuisine Combination Analysis
+# ============================================
+
+# Import Libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load Dataset
+df = pd.read_excel("restaurant_dataset_task2.xlsx")
+
+# Display first 5 rows
+print("First 5 Rows:")
+print(df.head())
+
+# Dataset Information
+print("\nDataset Info:")
+print(df.info())
+
+# Check Missing Values
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+# --------------------------------------------
+# 1. Most Common Cuisine Combinations
+# --------------------------------------------
+
+print("\nTop 10 Cuisine Combinations:")
+
+cuisine_count = df["Cuisines"].value_counts()
+
+print(cuisine_count.head(10))
+
+# Plot Top 10 Cuisine Combinations
+
+plt.figure(figsize=(10,6))
+cuisine_count.head(10).plot(kind='bar', color='skyblue')
+plt.title("Top 10 Cuisine Combinations")
+plt.xlabel("Cuisine Combination")
+plt.ylabel("Number of Restaurants")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# --------------------------------------------
+# 2. Average Rating by Cuisine Combination
+# --------------------------------------------
+
+print("\nAverage Rating by Cuisine Combination:")
+
+avg_rating = df.groupby("Cuisines")["Rating"].mean().sort_values(ascending=False)
+
+print(avg_rating)
+
+# Plot Average Ratings
+
+plt.figure(figsize=(10,6))
+avg_rating.plot(kind='bar', color='green')
+plt.title("Average Rating by Cuisine Combination")
+plt.xlabel("Cuisine Combination")
+plt.ylabel("Average Rating")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# --------------------------------------------
+# 3. Top Rated Cuisine Combinations
+# --------------------------------------------
+
+top_rated = df.groupby("Cuisines").agg({
+    "Rating":"mean",
+    "Votes":"sum"
+}).sort_values(by="Rating", ascending=False)
+
+print("\nTop Rated Cuisine Combinations:")
+print(top_rated)
+
+# --------------------------------------------
+# 4. Relationship Between Votes and Ratings
+# --------------------------------------------
+
+plt.figure(figsize=(8,6))
+plt.scatter(df["Votes"], df["Rating"], alpha=0.6)
+plt.title("Votes vs Ratings")
+plt.xlabel("Votes")
+plt.ylabel("Rating")
+plt.grid(True)
+plt.show()
+
+# Correlation
+
+correlation = df["Votes"].corr(df["Rating"])
+
+print("\nCorrelation between Votes and Rating:")
+print(round(correlation,3))
+
+# --------------------------------------------
+# 5. Conclusion
+# --------------------------------------------
+
+print("\n========== Conclusion ==========")
+print("1. Displayed the most common cuisine combinations.")
+print("2. Calculated average ratings for each cuisine combination.")
+print("3. Identified the highest-rated cuisine combinations.")
+print("4. Analyzed relationship between Votes and Ratings.")
+print("5. Generated visualizations for better understanding.")
