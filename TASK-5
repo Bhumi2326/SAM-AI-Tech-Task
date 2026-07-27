@@ -1,0 +1,123 @@
+# ============================================
+# Task 5 : Votes Analysis
+# ============================================
+
+# Import Libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load Dataset
+df = pd.read_excel("restaurant_dataset_task2.xlsx")
+
+# Display first 5 rows
+print("First 5 Rows")
+print(df.head())
+
+# -------------------------------------------------
+# 1. Restaurant with Highest Votes
+# -------------------------------------------------
+
+highest_votes = df.loc[df["Votes"].idxmax()]
+
+print("\nRestaurant with Highest Votes:")
+print(highest_votes)
+
+# -------------------------------------------------
+# 2. Restaurant with Lowest Votes
+# -------------------------------------------------
+
+lowest_votes = df.loc[df["Votes"].idxmin()]
+
+print("\nRestaurant with Lowest Votes:")
+print(lowest_votes)
+
+# -------------------------------------------------
+# 3. Top 10 Restaurants by Votes
+# -------------------------------------------------
+
+top_votes = df.sort_values(by="Votes", ascending=False).head(10)
+
+print("\nTop 10 Restaurants by Votes:")
+print(top_votes[["Restaurant Name", "Votes", "Rating"]])
+
+# Bar Chart
+
+plt.figure(figsize=(10,6))
+plt.bar(top_votes["Restaurant Name"], top_votes["Votes"])
+plt.title("Top 10 Restaurants by Votes")
+plt.xlabel("Restaurant Name")
+plt.ylabel("Votes")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# -------------------------------------------------
+# 4. Relationship Between Votes and Rating
+# -------------------------------------------------
+
+plt.figure(figsize=(8,6))
+plt.scatter(df["Votes"], df["Rating"], alpha=0.7)
+
+plt.title("Votes vs Rating")
+plt.xlabel("Votes")
+plt.ylabel("Rating")
+plt.grid(True)
+
+plt.show()
+
+# -------------------------------------------------
+# 5. Correlation Between Votes and Rating
+# -------------------------------------------------
+
+correlation = df["Votes"].corr(df["Rating"])
+
+print("\nCorrelation between Votes and Rating:")
+print(round(correlation,3))
+
+if correlation > 0:
+    print("There is a positive relationship between votes and ratings.")
+elif correlation < 0:
+    print("There is a negative relationship between votes and ratings.")
+else:
+    print("There is no relationship between votes and ratings.")
+
+# -------------------------------------------------
+# 6. Average Votes
+# -------------------------------------------------
+
+average_votes = df["Votes"].mean()
+
+print("\nAverage Votes:", round(average_votes,2))
+
+# -------------------------------------------------
+# 7. Distribution of Votes
+# -------------------------------------------------
+
+plt.figure(figsize=(8,6))
+plt.hist(df["Votes"], bins=10)
+
+plt.title("Distribution of Votes")
+plt.xlabel("Votes")
+plt.ylabel("Number of Restaurants")
+
+plt.tight_layout()
+plt.show()
+
+# -------------------------------------------------
+# 8. Summary Statistics
+# -------------------------------------------------
+
+print("\nSummary Statistics of Votes:")
+print(df["Votes"].describe())
+
+# -------------------------------------------------
+# Conclusion
+# -------------------------------------------------
+
+print("\n========== Conclusion ==========")
+print("1. Identified the restaurant with the highest number of votes.")
+print("2. Identified the restaurant with the lowest number of votes.")
+print("3. Listed the top 10 restaurants based on votes.")
+print("4. Analyzed the relationship between votes and ratings using a scatter plot.")
+print("5. Calculated the correlation between votes and ratings.")
+print("6. Displayed the distribution and summary statistics of votes.")
