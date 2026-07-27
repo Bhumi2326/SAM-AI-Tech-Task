@@ -1,0 +1,120 @@
+# ============================================
+# Task 4 : Restaurant Chains Analysis
+# ============================================
+
+# Import Libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load Dataset
+df = pd.read_excel("restaurant_dataset_task2.xlsx")
+
+# Display first 5 rows
+print("First 5 Rows")
+print(df.head())
+
+# -------------------------------------------------
+# 1. Identify Restaurant Chains
+# -------------------------------------------------
+
+print("\nRestaurant Chains:")
+
+# Since our dataset contains repeated restaurant names,
+# count how many outlets each restaurant has.
+
+chain_count = df["Restaurant Name"].value_counts()
+
+# Display restaurant chains having more than one outlet
+chains = chain_count[chain_count > 1]
+
+print(chains)
+
+# -------------------------------------------------
+# 2. Top 10 Restaurant Chains
+# -------------------------------------------------
+
+top_chains = chain_count.head(10)
+
+print("\nTop 10 Restaurant Chains")
+print(top_chains)
+
+# Plot
+
+plt.figure(figsize=(10,6))
+top_chains.plot(kind='bar', color='orange')
+plt.title("Top 10 Restaurant Chains")
+plt.xlabel("Restaurant Name")
+plt.ylabel("Number of Outlets")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# -------------------------------------------------
+# 3. Average Rating of Restaurant Chains
+# -------------------------------------------------
+
+avg_rating = df.groupby("Restaurant Name")["Rating"].mean()
+
+avg_rating = avg_rating.sort_values(ascending=False)
+
+print("\nAverage Rating of Restaurant Chains")
+print(avg_rating.head(10))
+
+# Plot
+
+plt.figure(figsize=(10,6))
+avg_rating.head(10).plot(kind='bar', color='green')
+plt.title("Top Rated Restaurant Chains")
+plt.xlabel("Restaurant Name")
+plt.ylabel("Average Rating")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# -------------------------------------------------
+# 4. Total Votes of Restaurant Chains
+# -------------------------------------------------
+
+votes = df.groupby("Restaurant Name")["Votes"].sum()
+
+votes = votes.sort_values(ascending=False)
+
+print("\nRestaurant Chains by Total Votes")
+print(votes.head(10))
+
+# Plot
+
+plt.figure(figsize=(10,6))
+votes.head(10).plot(kind='bar', color='red')
+plt.title("Most Popular Restaurant Chains (Votes)")
+plt.xlabel("Restaurant Name")
+plt.ylabel("Total Votes")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# -------------------------------------------------
+# 5. Summary Table
+# -------------------------------------------------
+
+summary = df.groupby("Restaurant Name").agg(
+    Total_Outlets=("Restaurant Name","count"),
+    Average_Rating=("Rating","mean"),
+    Total_Votes=("Votes","sum")
+)
+
+summary = summary.sort_values(by="Total_Outlets", ascending=False)
+
+print("\nRestaurant Chain Summary")
+print(summary)
+
+# -------------------------------------------------
+# Conclusion
+# -------------------------------------------------
+
+print("\n========== Conclusion ==========")
+print("1. Identified restaurant chains based on repeated restaurant names.")
+print("2. Displayed the top restaurant chains by number of outlets.")
+print("3. Calculated the average rating for each restaurant chain.")
+print("4. Calculated the total number of votes received by each chain.")
+print("5. Visualized the results using bar charts.")
